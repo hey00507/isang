@@ -39,4 +39,17 @@ class PostControllerTest {
                 .andDo(print());// MockMvcResultHandlers.print() -> 테스트 메서드의 진행상황 요약
     }
 
+    @Test
+    @DisplayName("/posts 요청시 title 값은 필수다.")
+    void test2() throws Exception {
+
+        mockMvc.perform(post("/posts")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"title\" : \"\" , \"content\" : \"내용이구요 우하하 \"}")
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.title").value("제목이 비어있으면 안된당께요."))
+                //.andExpect(content().string("Hello World"))
+                .andDo(print());
+    }
 }
