@@ -1,6 +1,7 @@
 package com.isang.api.domain;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -20,6 +21,8 @@ public class Post {
     @Lob //DB 에서는 String 형태가 아닌 LongText 형태로 생성되도록 해주는 어노테이션
     private String content;
 
+
+    @Builder
     public Post(String title, String content) {
         this.title = title;
         this.content = content;
