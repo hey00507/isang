@@ -110,4 +110,29 @@ class PostControllerTest {
         assertEquals("내용입니다.", post.getContent());
         //db -> post 2개 등록되는 부분은 개선이 필요 -> 각각의 테스트들은 모두 실행할 때도, 독립적으로 실행할 때도 무결성이 유지되어야함
     }
+
+
+    @Test
+    @DisplayName("글 한 개 조회")
+    void getPost() throws Exception {
+        //given
+
+        Post post = Post.builder()
+                .title("foo")
+                .content("bar")
+                .build();
+        postRepository.save(post);
+
+        //when
+        mockMvc.perform(get("/posts/{postId}", post.getId())
+                    .contentType(APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(post.getId()))
+                .andExpect(jsonPath("$.title").value(post.getTitle()))
+                .andExpect(jsonPath("$.content").value(post.getContent()))
+                .andDo(print());
+    }
+
+
+
 }
