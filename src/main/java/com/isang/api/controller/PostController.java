@@ -2,6 +2,7 @@ package com.isang.api.controller;
 
 import com.isang.api.domain.Post;
 import com.isang.api.request.PostCreate;
+import com.isang.api.response.PostResponse;
 import com.isang.api.service.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +24,9 @@ public class PostController {
 
 
     @GetMapping("/posts/{postId}")
-    public Post get(@PathVariable(name = "postId") Long id){
+    public PostResponse get(@PathVariable(name = "postId") Long id){
+        // request 클래스와 response 클래스를 나눔(response 는 서비스 정책에 맞게)
+
         return postService.get(id);
     }
 }
