@@ -1,5 +1,6 @@
 package com.isang.api.response;
 
+import com.isang.api.domain.Post;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -19,6 +20,12 @@ public class PostResponse {
         this.id = id;
         this.title = title.substring(0, Math.min(title.length() , 10));
         this.content = content;
+    }
+
+    public PostResponse(Post post){
+        this.id = post.getId();
+        this.title = post.getTitle().substring(0,Math.min(post.getTitle().length(),10));
+        this.content = post.getContent();
     }
 }
 

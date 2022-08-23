@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@Entity // 엔티티에는 절대로 서비스의 정책을 기입하지 말 것 , 서비스 정책에 맞는 응답 클래스를 생성하자
+@Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class Post {
@@ -18,7 +18,7 @@ public class Post {
 
     private String title;
 
-    @Lob //DB 에서는 String 형태가 아닌 LongText 형태로 생성되도록 해주는 어노테이션
+    @Lob
     private String content;
 
 

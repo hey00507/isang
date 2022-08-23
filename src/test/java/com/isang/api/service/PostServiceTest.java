@@ -4,12 +4,13 @@ import com.isang.api.domain.Post;
 import com.isang.api.repository.PostRepository;
 import com.isang.api.request.PostCreate;
 import com.isang.api.response.PostResponse;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -84,5 +85,31 @@ class PostServiceTest {
         assertEquals("foo1234567", response.getTitle());
         assertEquals("bar", response.getContent());
 
+    }
+
+    @Test
+    @DisplayName("여러 개의 글을 조회한다.")
+    void getList(){
+        //given
+        Post requestPost = Post.builder()
+                .title("foo1")
+                .content("bar1")
+                .build();
+
+        Post requestPost2 = Post.builder()
+                .title("foo2")
+                .content("bar2")
+                .build();
+
+        postRepository.save(requestPost);
+        postRepository.save(requestPost2);
+
+
+        // when
+        List<PostResponse> postResponses = postService.getList();
+
+
+        assertEquals(2L , postRepository.count());
+        assertEquals(2L , postResponses.size());
     }
 }
