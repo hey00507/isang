@@ -9,3 +9,10 @@ spring:
     username: sa
     password:
     driver-class-name: org.h2.Driver
+
+# 페이지네이션의 시작을 1 로 하겠다. : 웹 요청을 통한 page 를 교정해줌
+  data:
+    web:
+      pageable:
+        one-indexed-parameters: true
+        default-page-size: 5

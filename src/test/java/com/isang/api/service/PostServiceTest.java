@@ -9,11 +9,16 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.springframework.data.domain.Sort.Direction.DESC;
 
 
 @SpringBootTest
@@ -88,28 +93,33 @@ class PostServiceTest {
     }
 
     @Test
-    @DisplayName("여러 개의 글을 조회한다.")
+    @DisplayName("글의 첫 페이지를 조회한다.")
     void getList(){
         //given
-        Post requestPost = Post.builder()
-                .title("foo1")
-                .content("bar1")
-                .build();
-
-        Post requestPost2 = Post.builder()
-                .title("foo2")
-                .content("bar2")
-                .build();
-
-        postRepository.save(requestPost);
-        postRepository.save(requestPost2);
+        List<Post> requestPosts = (
+                IntStream.range(1,31)
+                .mapToObj(i -> Post.builder()
+                            .title("이상 제목 " + i)
+                            .content("반포자이 " + i)
+                            .build())
+                .collect(Collectors.toList())
+        ); // 인트스트림을 통한 반복문
+        postRepository.saveAll(requestPosts);
 
 
+        // sql -> select , limit, offset 쿼리를 이용
+        //
+
+
+        Pageable pageable = PageRequest.of(0, 5, DESC, "id");
         // when
-        List<PostResponse> postResponses = postService.getList();
+        List<PostResponse> postResponses = postService.getList(pageable);
 
 
-        assertEquals(2L , postRepository.count());
-        assertEquals(2L , postResponses.size());
+        // then
+        assertEquals(5L , postResponses.size());
+        assertEquals("이상 제목 30", postResponses.get(0).getTitle());
+        assertEquals("이상 제목 26", postResponses.get(4).getTitle());
     }
+
 }

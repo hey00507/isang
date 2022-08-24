@@ -12,6 +12,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -143,34 +147,24 @@ class PostControllerTest {
     @DisplayName("글 여러개 조회")
     void getPostList() throws Exception {
         //given
-
-        Post post1 = Post.builder()
-                .title("foo1")
-                .content("bar1")
-                .build();
-        postRepository.save(post1);
-
-        Post post2 = Post.builder()
-                .title("foo2")
-                .content("bar2")
-                .build();
-        postRepository.save(post2);
+        List<Post> requestPosts = (
+                IntStream.range(1,31)
+                        .mapToObj(i -> Post.builder()
+                                .title("이상 제목 " + i)
+                                .content("반포자이 " + i)
+                                .build())
+                        .collect(Collectors.toList())
+        ); // 인트스트림을 통한 반복문
+        postRepository.saveAll(requestPosts);
 
         //when
-        mockMvc.perform(get("/posts")
+        mockMvc.perform(get("/posts?page=1&sort=id,desc")
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
-                /**
-                 * {id : ... , title : ...}
-                 */
-
-                /**
-                 * [{id : ... , title : ...} {id : ... , title : ...}
-                 */
-                .andExpect(jsonPath("$.length()", is(2)))
-                .andExpect(jsonPath("$[0].id").value(post1.getId()))
-                .andExpect(jsonPath("$[0].title").value(post1.getTitle()))
-                .andExpect(jsonPath("$[0].content").value(post1.getContent()))
+                .andExpect(jsonPath("$.length()",is(5)))
+                .andExpect(jsonPath("$[0].id").value(30))
+                .andExpect(jsonPath("$[0].title").value("이상 제목 30"))
+                .andExpect(jsonPath("$[0].content").value("반포자이 30"))
                 .andDo(print());
     }
 
