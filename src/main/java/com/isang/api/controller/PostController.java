@@ -1,11 +1,11 @@
 package com.isang.api.controller;
 
 import com.isang.api.request.PostCreate;
+import com.isang.api.request.PostSearch;
 import com.isang.api.response.PostResponse;
 import com.isang.api.service.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -38,7 +38,7 @@ public class PostController {
      * -> 게시글의 경우는 DB 에서 모두 긁어올 일이 없음 -> 요청한 페이지에 대해서만 요청을 하도록 함
      */
     @GetMapping("/posts")
-    public List<PostResponse> getList(Pageable pageable){
-        return postService.getList(pageable);
+    public List<PostResponse> getList(@ModelAttribute PostSearch postSearch){
+        return postService.getList(postSearch);
     }
 }

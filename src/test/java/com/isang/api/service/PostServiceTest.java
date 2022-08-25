@@ -3,14 +3,13 @@ package com.isang.api.service;
 import com.isang.api.domain.Post;
 import com.isang.api.repository.PostRepository;
 import com.isang.api.request.PostCreate;
+import com.isang.api.request.PostSearch;
 import com.isang.api.response.PostResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,7 +17,6 @@ import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.springframework.data.domain.Sort.Direction.DESC;
 
 
 @SpringBootTest
@@ -111,13 +109,16 @@ class PostServiceTest {
         //
 
 
-        Pageable pageable = PageRequest.of(0, 5, DESC, "id");
         // when
-        List<PostResponse> postResponses = postService.getList(pageable);
+        PostSearch postSearch = PostSearch.builder()
+                .page(1)
+                .size(10)
+                .build();
 
+        List<PostResponse> postResponses = postService.getList(postSearch);
 
         // then
-        assertEquals(5L , postResponses.size());
+        assertEquals(10L , postResponses.size());
         assertEquals("이상 제목 30", postResponses.get(0).getTitle());
         assertEquals("이상 제목 26", postResponses.get(4).getTitle());
     }

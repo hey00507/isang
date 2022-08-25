@@ -158,7 +158,33 @@ class PostControllerTest {
         postRepository.saveAll(requestPosts);
 
         //when
-        mockMvc.perform(get("/posts?page=1&sort=id,desc")
+        mockMvc.perform(get("/posts?page=1&size=5")
+                        .contentType(APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()",is(5)))
+                .andExpect(jsonPath("$[0].id").value(30))
+                .andExpect(jsonPath("$[0].title").value("이상 제목 30"))
+                .andExpect(jsonPath("$[0].content").value("반포자이 30"))
+                .andDo(print());
+    }
+
+
+    @Test
+    @DisplayName("페이지를 0으로 요청해도 1의 페이지 값을 가지고 온다.")
+    void getPostListWithPage0() throws Exception {
+        //given
+        List<Post> requestPosts = (
+                IntStream.range(1,31)
+                        .mapToObj(i -> Post.builder()
+                                .title("이상 제목 " + i)
+                                .content("반포자이 " + i)
+                                .build())
+                        .collect(Collectors.toList())
+        ); // 인트스트림을 통한 반복문
+        postRepository.saveAll(requestPosts);
+
+        //when
+        mockMvc.perform(get("/posts?page=0&size=5")
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()",is(5)))
