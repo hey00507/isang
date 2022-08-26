@@ -3,6 +3,7 @@ package com.isang.api.service;
 import com.isang.api.domain.Post;
 import com.isang.api.repository.PostRepository;
 import com.isang.api.request.PostCreate;
+import com.isang.api.request.PostEdit;
 import com.isang.api.request.PostSearch;
 import com.isang.api.response.PostResponse;
 import org.junit.jupiter.api.BeforeEach;
@@ -123,4 +124,53 @@ class PostServiceTest {
         assertEquals("이상 제목 26", postResponses.get(4).getTitle());
     }
 
+
+    @Test
+    @DisplayName("글 제목수정")
+    void update(){
+        //given
+        Post requestPost = Post.builder()
+                .title("이상님")
+                .content("반포자이")
+                .build();
+        postRepository.save(requestPost);
+
+
+        PostEdit postEdit = PostEdit.builder()
+                .title("이상")
+                .build();
+        // when
+        postService.edit(requestPost.getId(), postEdit);
+
+
+        // then
+
+
+        Post changedPost = postRepository.findById(requestPost.getId())
+                .orElseThrow(() -> new RuntimeException("글이 존재하지 않습니다. id = " + requestPost.getId()));
+
+        assertEquals("이상", changedPost.getTitle());
+    }
+
+   @Test
+    @DisplayName("글 제목수정, 컨텐츠는 안수정")
+    void updatePost(){
+        //given
+        Post requestPost = Post.builder()
+                .title("이상님")
+                .content("반포자이")
+                .build();
+        postRepository.save(requestPost);
+        PostEdit postEdit = PostEdit.builder()
+                .title("이상")
+                .content("반포자이") // 데이터를 수정하지 않더라도 한 번 더 넘겨주는 것이 깔끔하다.
+                .build();
+        // when
+        postService.edit(requestPost.getId(), postEdit);
+        // then
+        Post changedPost = postRepository.findById(requestPost.getId())
+                .orElseThrow(() -> new RuntimeException("글이 존재하지 않습니다. id = " + requestPost.getId()));
+
+        assertEquals("반포자이", changedPost.getContent());
+    }
 }

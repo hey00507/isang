@@ -1,6 +1,7 @@
 package com.isang.api.controller;
 
 import com.isang.api.request.PostCreate;
+import com.isang.api.request.PostEdit;
 import com.isang.api.request.PostSearch;
 import com.isang.api.response.PostResponse;
 import com.isang.api.service.PostService;
@@ -28,17 +29,13 @@ public class PostController {
         return postService.get(id);
     }
 
-
-    /**
-     * 페이징이 필요한 이유?
-     *
-     * 글이 너무 많은 경우? -> 비용이 많이 들게 된다.
-     * 글이 -> 100,000,000 -> DB 글을 모두 조회할 경우? -> DB 가 뻗는다.
-     * DB -> 애플리케이션 서버로 전달하는 시간 , 트래픽 비용이 많이 발생할 수 있다.
-     * -> 게시글의 경우는 DB 에서 모두 긁어올 일이 없음 -> 요청한 페이지에 대해서만 요청을 하도록 함
-     */
     @GetMapping("/posts")
     public List<PostResponse> getList(@ModelAttribute PostSearch postSearch){
         return postService.getList(postSearch);
+    }
+
+    @PatchMapping("/posts/{postId}")
+    public void edit(@PathVariable Long postId, @RequestBody @Valid PostEdit request){
+        postService.edit(postId,request);
     }
 }

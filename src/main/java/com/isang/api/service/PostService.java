@@ -1,14 +1,17 @@
 package com.isang.api.service;
 
 import com.isang.api.domain.Post;
+import com.isang.api.domain.PostEditor;
 import com.isang.api.repository.PostRepository;
 import com.isang.api.request.PostCreate;
+import com.isang.api.request.PostEdit;
 import com.isang.api.request.PostSearch;
 import com.isang.api.response.PostResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -44,5 +47,17 @@ public class PostService {
         return postRepository.getList(postSearch).stream()
                 .map(PostResponse::new)
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void edit(Long id, PostEdit postEdit){
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 글입니다."));
+        PostEditor.PostEditorBuilder postEditorBuilder = post.toEditor();
+        PostEditor postEditor = postEditorBuilder.title(postEdit.getTitle())
+                .content(postEdit.getContent())
+                .build();
+
+        post.edit(postEditor);
     }
 }

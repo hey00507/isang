@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.isang.api.domain.Post;
 import com.isang.api.repository.PostRepository;
 import com.isang.api.request.PostCreate;
+import com.isang.api.request.PostEdit;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,8 +20,7 @@ import java.util.stream.IntStream;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -194,4 +194,30 @@ class PostControllerTest {
                 .andDo(print());
     }
 
+
+    @Test
+    @DisplayName("글제목 수정")
+    void editPost() throws Exception {
+        //given
+
+        Post post = Post.builder()
+                .title("내 이름은 코난")
+                .content("탐정이죠")
+                .build();
+
+        postRepository.save(post);
+
+        PostEdit postEdit = PostEdit.builder()
+                .title("이상")
+                .content("반포자이")
+                .build();
+
+
+        //when
+        mockMvc.perform(patch("/posts/{postId}", post.getId()) //PATCH /posts/{postId}
+                .contentType(APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(postEdit)))
+                .andExpect(status().isOk())
+                .andDo(print());
+    }
 }
