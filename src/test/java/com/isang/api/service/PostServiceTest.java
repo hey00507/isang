@@ -173,4 +173,18 @@ class PostServiceTest {
 
         assertEquals("반포자이", changedPost.getContent());
     }
+
+
+    @Test
+    @DisplayName("게시글 삭제")
+    void deletePost(){
+        //given
+        Post requestPost = Post.builder()
+                .title("이상님")
+                .content("반포자이")
+                .build();
+        postRepository.save(requestPost);
+        postService.delete(requestPost.getId());
+        assertEquals(0, postRepository.count());
+    }
 }
