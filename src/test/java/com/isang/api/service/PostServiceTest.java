@@ -1,6 +1,7 @@
 package com.isang.api.service;
 
 import com.isang.api.domain.Post;
+import com.isang.api.exception.PostNotFound;
 import com.isang.api.repository.PostRepository;
 import com.isang.api.request.PostCreate;
 import com.isang.api.request.PostEdit;
@@ -16,8 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 @SpringBootTest
@@ -186,5 +186,55 @@ class PostServiceTest {
         postRepository.save(requestPost);
         postService.delete(requestPost.getId());
         assertEquals(0, postRepository.count());
+    }
+
+    @Test
+    @DisplayName("글 하나 조회 - 존재하지 않는 글")
+    void handlingReadException(){
+        //given
+        Post post = Post.builder()
+                .title("foo1234567890123")
+                .content("bar")
+                .build();
+        /*
+         * 클라이언트 요구사항
+         * Json 응답에서 title 값이 최대 10글자만 되게끔 해달라 -> 원래는 클라이언트 단에서 필터링해주는 것이 맞음
+         * Post Class 와 PostResponse 의 필드가 같기에 문제가 될 부분이 크게 없음
+         * */
+
+
+        postRepository.save(post); // save 메서드가 실행되면, 기존의 null 이던 requsetPost 의 id 값이, pk 값에 맡게 새로 set 된다.
+
+        //expected
+        assertThrows(PostNotFound.class, () -> postService.get(post.getId() + 1L));
+    }
+
+    @Test
+    @DisplayName("게시글 삭제 - 존재하지 않는글")
+    void deletePostException(){
+        //given
+        Post requestPost = Post.builder()
+                .title("이상님")
+                .content("반포자이")
+                .build();
+        postRepository.save(requestPost);
+        assertThrows(PostNotFound.class, () -> postService.delete(requestPost.getId() + 1L));
+    }
+
+    @Test
+    @DisplayName("글 제목수정 - 존재하지 않는 글")
+    void updatePostException(){
+        //given
+        Post requestPost = Post.builder()
+                .title("이상님")
+                .content("반포자이")
+                .build();
+        postRepository.save(requestPost);
+        PostEdit postEdit = PostEdit.builder()
+                .title("이상")
+                .content("반포자이")
+                .build();
+        // expected
+        assertThrows(PostNotFound.class, () -> postService.edit(requestPost.getId() + 1L, postEdit));
     }
 }
