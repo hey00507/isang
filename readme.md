@@ -1,4 +1,7 @@
 # 개인공부
 - Spring JPA
+  - QueryDSL
 - Spring TEST
-- Spring Boot 등
+  - Assertion
+  - Mocking
+- Spring Boot
