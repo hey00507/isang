@@ -1,6 +1,7 @@
 package com.isang.api.controller;
 
 
+import com.isang.api.exception.PostNotFound;
 import com.isang.api.response.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -27,6 +28,19 @@ public class ExceptionController {
             for(FieldError fieldError : e.getFieldErrors()){
                         response.addValidation(fieldError.getField(),fieldError.getDefaultMessage());
             }
+
+        return  response;
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(PostNotFound.class)
+    @ResponseBody
+    public ErrorResponse postNotFoundHandler(PostNotFound e){
+        ErrorResponse response = ErrorResponse.builder()
+                .code("404")
+                .message(e.getMessage())
+                .build();
+
 
         return  response;
     }

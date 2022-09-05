@@ -237,4 +237,33 @@ class PostControllerTest {
                 .andExpect(status().isOk())
                 .andDo(print());
     }
+
+    @Test
+    @DisplayName("존재하지 않는 게시글 삭제")
+    void deleteNothing() throws Exception{
+
+        mockMvc.perform(delete("/posts/{postId}", 1L)
+                .contentType(APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andDo(print());
+
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 게시글 수정")
+    void patchNothing() throws Exception{
+
+
+        PostEdit postEdit = PostEdit.builder()
+                .title("이상")
+                .content("반포자이")
+                .build();
+
+        mockMvc.perform(patch("/posts/{postId}", 1L)
+                        .contentType(APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(postEdit))) 
+                .andExpect(status().isNotFound())
+                .andDo(print());
+
+    }
 }
