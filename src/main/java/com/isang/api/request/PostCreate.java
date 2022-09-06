@@ -1,5 +1,6 @@
 package com.isang.api.request;
 
+import com.isang.api.exception.InvalidRequest;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
@@ -22,10 +23,11 @@ public class PostCreate {
         this.content = content;
     }
 
-    // 빌더 패턴의 장점?
-    // - 가독성이 좋다.
-    // - 필요한 값만 받을 수 있다.
-    // - 객체의 불변성을 유지할 수 있다.
-    // - 빌더 오버로딩이 가능한 조건에 대해서 확인해보자.
+    public void validate(){
+        if(this.title.contains("바보")){
+            throw new InvalidRequest("title", "제목에 바보를 포함할 수 없습니다.");
+        }
+    }
 }
+
 

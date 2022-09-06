@@ -1,10 +1,11 @@
 package com.isang.api.controller;
 
 
-import com.isang.api.exception.PostNotFound;
+import com.isang.api.exception.IsangException;
 import com.isang.api.response.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -32,15 +33,24 @@ public class ExceptionController {
         return  response;
     }
 
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(PostNotFound.class)
     @ResponseBody
-    public ErrorResponse postNotFoundHandler(PostNotFound e){
-        ErrorResponse response = ErrorResponse.builder()
-                .code("404")
+    @ExceptionHandler(IsangException.class)
+    public ResponseEntity<ErrorResponse> IsangException(IsangException e){
+
+        String statusCode = e.getStatusCode();
+        
+        
+        ErrorResponse body = ErrorResponse.builder()
+                .code(statusCode)
                 .message(e.getMessage())
+                .validation(e.getValidation())
                 .build();
 
+
+        //응답 Json Validation 필드에 title : 제목에 '바보'를 포함할 수 없습니다.
+
+        ResponseEntity<ErrorResponse> response = ResponseEntity.status(Integer.parseInt(statusCode))
+                .body(body);
 
         return  response;
     }

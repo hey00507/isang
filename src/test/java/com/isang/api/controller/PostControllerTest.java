@@ -162,7 +162,7 @@ class PostControllerTest {
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()",is(5)))
-                .andExpect(jsonPath("$[0].id").value(30))
+                .andExpect(jsonPath("$[0].id").value(31))
                 .andExpect(jsonPath("$[0].title").value("이상 제목 30"))
                 .andExpect(jsonPath("$[0].content").value("반포자이 30"))
                 .andDo(print());
@@ -187,8 +187,6 @@ class PostControllerTest {
         mockMvc.perform(get("/posts?page=0&size=5")
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()",is(5)))
-                .andExpect(jsonPath("$[0].id").value(30))
                 .andExpect(jsonPath("$[0].title").value("이상 제목 30"))
                 .andExpect(jsonPath("$[0].content").value("반포자이 30"))
                 .andDo(print());
@@ -253,17 +251,43 @@ class PostControllerTest {
     @DisplayName("존재하지 않는 게시글 수정")
     void patchNothing() throws Exception{
 
-
+// Given
         PostEdit postEdit = PostEdit.builder()
                 .title("이상")
                 .content("반포자이")
                 .build();
-
+//expected
         mockMvc.perform(patch("/posts/{postId}", 1L)
                         .contentType(APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(postEdit))) 
+                .content(objectMapper.writeValueAsString(postEdit)))
                 .andExpect(status().isNotFound())
                 .andDo(print());
 
+    }
+
+
+    @Test
+    @DisplayName("/게시글 등록시 제목에 '바보'는 포함될 수 없다.")
+    void invalidRequestTest() throws Exception {
+
+
+
+        // given
+        //PostCreate request = new PostCreate("제목입니다.", "내용입니다.");
+        // 생성자를 통한 주입의 경우엔 추후에 비롯되는 에러를 파악하기 힘들어짐 (생성자에서의 파라미터 순서를 변경하는 경우) -> 빌더를 써야하는 이유
+
+        PostCreate request = PostCreate.builder()
+                .title("바보입니다.")
+                .content("내용입니다.")
+                .build();
+        // context 에 담아줄 수 있게끔 ObjectMapper 를 json string 형태로 변경해줌 (ObjectMapper 는 매우 자주 쓰이므로 꼭 기억)
+
+        String json = objectMapper.writeValueAsString(request);// 추후에 테스트 케이스를 수정하기 용이해짐
+
+        mockMvc.perform(post("/posts")
+                        .contentType(APPLICATION_JSON)
+                        .content(json))
+                .andExpect(status().isBadRequest())
+                .andDo(print());
     }
 }
