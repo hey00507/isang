@@ -1,0 +1,13 @@
+= 이상 API
+:toc: // Table Of Contents
+
+== 글 단건조회
+
+=== 요청
+include::{snippets}/index/http-request.adoc[]
+
+=== 응답
+include::{snippets}/index/http-response.adoc[]
+
+=== CURL
+include::{snippets}/index/curl-request.adoc[]

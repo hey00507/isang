@@ -1,7 +1,8 @@
 plugins {
+    id 'java'
     id 'org.springframework.boot' version '2.6.10'
     id 'io.spring.dependency-management' version '1.0.12.RELEASE'
-    id 'java'
+    id 'org.asciidoctor.jvm.convert' version '3.3.2'
 }
 
 group = 'com.isang'
@@ -11,13 +12,23 @@ configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
+    asciidoctorExt
 }
 
 repositories {
     mavenCentral()
 }
 
+ext{
+    asciidocVersion = "2.0.6.RELEASE"
+    snippetsDir = file('build/generated-snippets')
+}
+
 dependencies {
+    asciidoctorExt "org.springframework.restdocs:spring-restdocs-asciidoctor:${asciidocVersion}"
+    testImplementation "org.springframework.restdocs:spring-restdocs-mockmvc:${asciidocVersion}"
+
+
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
@@ -37,4 +48,22 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+test {
+    outputs.dir snippetsDir
+}
+
+asciidoctor {
+    inputs.dir snippetsDir
+    configurations 'asciidoctorExt'
+    dependsOn test
+}
+
+bootJar{
+    dependsOn asciidoctor
+
+    copy{
+        from asciidoctor.outputDir
+        into 'src/main/resources/static/docs'
+    }
 }
