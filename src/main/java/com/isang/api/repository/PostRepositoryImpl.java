@@ -2,7 +2,7 @@ package com.isang.api.repository;
 
 import com.isang.api.domain.Post;
 import com.isang.api.domain.QPost;
-import com.isang.api.request.PostSearch;
+import com.isang.api.entity.request.PostSearch;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 

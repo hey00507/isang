@@ -1,8 +1,8 @@
 package com.isang.api.controller;
 
 
-import com.isang.api.exception.IsangException;
-import com.isang.api.response.ErrorResponse;
+import com.isang.common.exception.IsangException;
+import com.isang.api.entity.response.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

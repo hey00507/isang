@@ -1,4 +1,4 @@
-package com.isang.api.exception;
+package com.isang.common.exception;
 
 
 import lombok.Getter;

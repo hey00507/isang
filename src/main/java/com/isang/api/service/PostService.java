@@ -2,12 +2,12 @@ package com.isang.api.service;
 
 import com.isang.api.domain.Post;
 import com.isang.api.domain.PostEditor;
-import com.isang.api.exception.PostNotFound;
+import com.isang.common.exception.custom.PostNotFound;
 import com.isang.api.repository.PostRepository;
-import com.isang.api.request.PostCreate;
-import com.isang.api.request.PostEdit;
-import com.isang.api.request.PostSearch;
-import com.isang.api.response.PostResponse;
+import com.isang.api.entity.request.PostCreate;
+import com.isang.api.entity.request.PostEdit;
+import com.isang.api.entity.request.PostSearch;
+import com.isang.api.entity.response.PostResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

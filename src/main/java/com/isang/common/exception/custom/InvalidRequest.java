@@ -1,5 +1,6 @@
-package com.isang.api.exception;
+package com.isang.common.exception.custom;
 
+import com.isang.common.exception.IsangException;
 import lombok.Getter;
 
 /**
@@ -7,7 +8,7 @@ import lombok.Getter;
  */
 
 @Getter
-public class InvalidRequest extends IsangException{
+public class InvalidRequest extends IsangException {
 
     private static final String MESSAGE = "잘못된 요청입니다.";
 

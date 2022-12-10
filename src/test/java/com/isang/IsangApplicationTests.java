@@ -17,6 +17,8 @@ class IsangApplicationTests {
                     핳
                     
                     """;
+
+
     @Test
     void contextLoads() {
         // 스프링 컨텍스트를 테스트하기 위한 메서드
@@ -31,6 +33,8 @@ class IsangApplicationTests {
             Object bean = applicationContext.getBean(beanDefinitionName);
             System.out.println("bean = " + bean);
         }
+
+
     }
 
 }

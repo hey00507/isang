@@ -1,7 +1,7 @@
 package com.isang.api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.isang.api.request.PostCreate;
+import com.isang.api.entity.request.PostCreate;
 import com.isang.api.service.PostService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

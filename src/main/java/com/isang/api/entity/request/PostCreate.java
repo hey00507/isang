@@ -1,6 +1,6 @@
-package com.isang.api.request;
+package com.isang.api.entity.request;
 
-import com.isang.api.exception.InvalidRequest;
+import com.isang.common.exception.custom.InvalidRequest;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;

@@ -1,4 +1,4 @@
-package com.isang.api.config;
+package com.isang.common.config;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.context.annotation.Bean;

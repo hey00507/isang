@@ -1,7 +1,7 @@
 package com.isang.api.repository;
 
 import com.isang.api.domain.Post;
-import com.isang.api.request.PostSearch;
+import com.isang.api.entity.request.PostSearch;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.isang.api.response;
+package com.isang.api.entity.response;
 
 import lombok.Builder;
 import lombok.Getter;

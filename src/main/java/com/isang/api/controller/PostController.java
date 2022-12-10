@@ -1,9 +1,9 @@
 package com.isang.api.controller;
 
-import com.isang.api.request.PostCreate;
-import com.isang.api.request.PostEdit;
-import com.isang.api.request.PostSearch;
-import com.isang.api.response.PostResponse;
+import com.isang.api.entity.request.PostCreate;
+import com.isang.api.entity.request.PostEdit;
+import com.isang.api.entity.request.PostSearch;
+import com.isang.api.entity.response.PostResponse;
 import com.isang.api.service.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

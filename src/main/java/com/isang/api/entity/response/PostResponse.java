@@ -1,4 +1,4 @@
-package com.isang.api.response;
+package com.isang.api.entity.response;
 
 import com.isang.api.domain.Post;
 import lombok.Builder;
