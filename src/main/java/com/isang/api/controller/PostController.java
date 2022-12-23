@@ -21,7 +21,7 @@ public class PostController {
     private final PostService postService;
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/posts")
+    @PostMapping("/post")
     public void post(@RequestBody @Valid PostCreate request) {
         request.validate();
         postService.write(request);
@@ -29,25 +29,25 @@ public class PostController {
 
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/posts/{postId}")
+    @GetMapping("/post/{postId}")
     public PostResponse get(@PathVariable(name = "postId") Long id){
         return postService.get(id);
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/posts")
+    @GetMapping("/post")
     public List<PostResponse> getList(@ModelAttribute PostSearch postSearch){
         return postService.getList(postSearch);
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PatchMapping("/posts/{postId}")
+    @PatchMapping("/post/{postId}")
     public void edit(@PathVariable Long postId, @RequestBody @Valid PostEdit request){
         postService.edit(postId,request);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @DeleteMapping("/posts/{postId}")
+    @DeleteMapping("/post/{postId}")
     public void delete(@PathVariable Long postId){
         postService.delete(postId);
     }

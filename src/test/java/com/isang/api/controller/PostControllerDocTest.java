@@ -58,7 +58,7 @@ public class PostControllerDocTest {
 
 
         //expected
-        this.mockMvc.perform(get("/posts/{postId}",1L)
+        this.mockMvc.perform(get("/post/{postId}",1L)
                 .accept(APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -87,11 +87,11 @@ public class PostControllerDocTest {
         String json = objectMapper.writeValueAsString(request);
 
         //expected
-        this.mockMvc.perform(post("/posts",1L)
+        this.mockMvc.perform(post("/post",1L)
                         .contentType(APPLICATION_JSON) //accept 와 contentType 에 대한 차이점 확인하기
                         .content(json))
                 .andDo(print())
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andDo(document("post-create",
                         requestFields(
                                 fieldWithPath("title").description("제목")
