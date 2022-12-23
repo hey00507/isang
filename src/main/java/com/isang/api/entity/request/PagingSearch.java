@@ -13,9 +13,7 @@ public abstract class PagingSearch {
 
 
     private static final int MAX_SIZE = 2000;
-    @Builder.Default
     private Integer page = 1;
-    @Builder.Default
     private Integer size = 10;
 
     private boolean paging = true;

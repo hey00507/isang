@@ -3,19 +3,18 @@ package com.isang.api.repository;
 import com.isang.api.domain.Post;
 import com.isang.api.domain.QPost;
 import com.isang.api.entity.request.PostSearch;
-import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPQLQuery;
-import com.querydsl.jpa.impl.JPAQueryFactory;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public class PostRepositoryImpl extends QuerydslRepositorySupport implements PostRepositoryCustom {
 
-    public PostRepositoryImpl(Class<?> domainClass) {
-        super(domainClass);
+    public PostRepositoryImpl() {
+        super(Post.class);
     }
 
     @Override

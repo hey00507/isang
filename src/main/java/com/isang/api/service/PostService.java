@@ -11,8 +11,8 @@ import com.isang.api.entity.response.PostResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,7 +20,6 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class PostService {
-
 
     private final PostRepository postRepository;
 
@@ -34,6 +33,7 @@ public class PostService {
         postRepository.save(post);
     }
 
+    @Transactional(readOnly = true)
     public PostResponse get(Long id) {
        Post post = postRepository.findById(id)
                .orElseThrow(PostNotFound::new);
@@ -45,13 +45,14 @@ public class PostService {
                 .build();
     }
 
+    @Transactional(readOnly = true)
     public List<PostResponse> getList(PostSearch postSearch) {
         return postRepository.getList(postSearch).stream()
                 .map(PostResponse::new)
                 .collect(Collectors.toList());
     }
 
-    @Transactional
+
     public void edit(Long id, PostEdit postEdit){
         Post post = postRepository.findById(id)
                 .orElseThrow(PostNotFound::new);
