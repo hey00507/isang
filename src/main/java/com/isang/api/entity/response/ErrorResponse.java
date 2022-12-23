@@ -21,7 +21,7 @@ import java.util.Map;
 //@JsonInclude(value = JsonInclude.Include.NON_EMPTY) // 비어있지 않은 데이터만 리턴하겠다.
 public class ErrorResponse {
 
-    private final String code;
+    private final Integer code;
     private final String message;
     private final Map<String,String> validation;
     public void addValidation(String fieldName,String errorMessage){
@@ -29,7 +29,7 @@ public class ErrorResponse {
     }
 
     @Builder
-    public ErrorResponse(String code, String message, Map<String, String> validation) {
+    public ErrorResponse(Integer code, String message, Map<String, String> validation) {
         this.code = code;
         this.message = message;
         this.validation = validation != null ? validation : new HashMap<>();

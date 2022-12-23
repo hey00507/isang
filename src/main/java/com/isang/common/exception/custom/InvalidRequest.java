@@ -2,6 +2,7 @@ package com.isang.common.exception.custom;
 
 import com.isang.common.exception.IsangException;
 import lombok.Getter;
+import org.springframework.http.HttpStatus;
 
 /**
  * status -> 400
@@ -19,7 +20,7 @@ public class InvalidRequest extends IsangException {
         addValidation(fieldName,message);
     }
     @Override
-    public String getStatusCode(){
-        return "400";
+    public Integer getStatusCode(){
+        return HttpStatus.BAD_REQUEST.value();
     }
 }

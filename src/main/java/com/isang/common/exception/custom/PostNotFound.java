@@ -1,9 +1,10 @@
 package com.isang.common.exception.custom;
 
 import com.isang.common.exception.IsangException;
+import org.springframework.http.HttpStatus;
 
 /**
- * status -> 400
+ * status -> 404
  */
 public class PostNotFound extends IsangException {
 
@@ -14,7 +15,7 @@ public class PostNotFound extends IsangException {
     }
 
     @Override
-    public String getStatusCode() {
-        return "404";
+    public Integer getStatusCode() {
+        return HttpStatus.NOT_FOUND.value();
     }
 }
