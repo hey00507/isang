@@ -1,7 +1,8 @@
-# 개인공부
-- Spring JPA
-  - QueryDSL
+# Simple Web Application 
+
+- Spring Boot
+- Spring Data JPA
+- QueryDSL
 - Spring TEST
   - Assertion
   - Mocking
-- Spring Boot
