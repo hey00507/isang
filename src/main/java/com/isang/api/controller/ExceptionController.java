@@ -22,7 +22,7 @@ public class ExceptionController {
     @ResponseBody
     public ErrorResponse invalidRequestHandler(MethodArgumentNotValidException e){
             ErrorResponse response = ErrorResponse.builder()
-                    .code("400")
+                    .code(HttpStatus.BAD_REQUEST.value())
                     .message("잘못된 요청입니다.")
                     .build();
 
@@ -37,7 +37,7 @@ public class ExceptionController {
     @ExceptionHandler(IsangException.class)
     public ResponseEntity<ErrorResponse> IsangException(IsangException e){
 
-        String statusCode = e.getStatusCode();
+        Integer statusCode = e.getStatusCode();
         
         
         ErrorResponse body = ErrorResponse.builder()
@@ -49,7 +49,7 @@ public class ExceptionController {
 
         //응답 Json Validation 필드에 title : 제목에 '바보'를 포함할 수 없습니다.
 
-        ResponseEntity<ErrorResponse> response = ResponseEntity.status(Integer.parseInt(statusCode))
+        ResponseEntity<ErrorResponse> response = ResponseEntity.status(statusCode)
                 .body(body);
 
         return  response;

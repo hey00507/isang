@@ -1,17 +1,18 @@
 package com.isang.api.service;
 
 import com.isang.api.domain.Post;
-import com.isang.common.exception.custom.PostNotFound;
-import com.isang.api.repository.PostRepository;
 import com.isang.api.entity.request.PostCreate;
 import com.isang.api.entity.request.PostEdit;
 import com.isang.api.entity.request.PostSearch;
 import com.isang.api.entity.response.PostResponse;
+import com.isang.api.repository.PostRepository;
+import com.isang.common.exception.custom.PostNotFound;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 @SpringBootTest
+@Transactional
 class PostServiceTest {
 
 
@@ -111,10 +113,9 @@ class PostServiceTest {
 
 
         // when
-        PostSearch postSearch = PostSearch.builder()
-                .page(1)
-                .size(10)
-                .build();
+        PostSearch postSearch = new PostSearch();
+        postSearch.setPage(1);
+        postSearch.setSize(10);
 
         List<PostResponse> postResponses = postService.getList(postSearch);
 

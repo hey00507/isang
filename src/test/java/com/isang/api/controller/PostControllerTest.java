@@ -62,11 +62,11 @@ class PostControllerTest {
 
         String json = objectMapper.writeValueAsString(request);// 추후에 테스트 케이스를 수정하기 용이해짐
 
-        mockMvc.perform(post("/posts")
+        mockMvc.perform(post("/post")
                         .contentType(APPLICATION_JSON)
                         .content(json)
                 )
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andDo(print());
     }
     @Test
@@ -81,14 +81,14 @@ class PostControllerTest {
 
         String json = objectMapper.writeValueAsString(request);
 
-        mockMvc.perform(post("/posts")
+        mockMvc.perform(post("/post")
                         .contentType(APPLICATION_JSON)
                         .content(json)
                 )
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.code").value("400"))
                 .andExpect(jsonPath("$.message").value("잘못된 요청입니다."))
-                .andExpect(jsonPath("$.validation.title").value("제목이 비어있으면 안된당께요."))
+                .andExpect(jsonPath("$.validation.title").value("제목이 비어있으면 안됩니다."))
                 .andDo(print());
     }
     @Test
@@ -105,11 +105,11 @@ class PostControllerTest {
         String json = objectMapper.writeValueAsString(request);
 
         // when
-        mockMvc.perform(post("/posts")
+        mockMvc.perform(post("/post")
                         .contentType(APPLICATION_JSON)
                         .content(json)
                 )
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andDo(print());
 
         //then
@@ -134,7 +134,7 @@ class PostControllerTest {
         postRepository.save(post);
 
         //when
-        mockMvc.perform(get("/posts/{postId}", post.getId())
+        mockMvc.perform(get("/post/{postId}", post.getId())
                     .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(post.getId()))
@@ -158,7 +158,7 @@ class PostControllerTest {
         postRepository.saveAll(requestPosts);
 
         //when
-        mockMvc.perform(get("/posts?page=1&size=5")
+        mockMvc.perform(get("/post?page=1&size=5")
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()",is(5)))
@@ -184,7 +184,7 @@ class PostControllerTest {
         postRepository.saveAll(requestPosts);
 
         //when
-        mockMvc.perform(get("/posts?page=0&size=5")
+        mockMvc.perform(get("/post?page=0&size=5")
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].title").value("이상 제목 30"))
@@ -212,7 +212,7 @@ class PostControllerTest {
 
 
         //when
-        mockMvc.perform(patch("/posts/{postId}", post.getId()) //PATCH /posts/{postId}
+        mockMvc.perform(patch("/post/{postId}", post.getId()) //PATCH /posts/{postId}
                 .contentType(APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(postEdit)))
                 .andExpect(status().isOk())
@@ -230,9 +230,9 @@ class PostControllerTest {
 
         postRepository.save(post);
 
-        mockMvc.perform(delete("/posts/{postId}", post.getId())
+        mockMvc.perform(delete("/post/{postId}", post.getId())
                 .contentType(APPLICATION_JSON))
-                .andExpect(status().isOk())
+                .andExpect(status().isNoContent())
                 .andDo(print());
     }
 
@@ -240,7 +240,7 @@ class PostControllerTest {
     @DisplayName("존재하지 않는 게시글 삭제")
     void deleteNothing() throws Exception{
 
-        mockMvc.perform(delete("/posts/{postId}", 1L)
+        mockMvc.perform(delete("/post/{postId}", 1L)
                 .contentType(APPLICATION_JSON))
                 .andExpect(status().isNotFound())
                 .andDo(print());
@@ -257,7 +257,7 @@ class PostControllerTest {
                 .content("반포자이")
                 .build();
 //expected
-        mockMvc.perform(patch("/posts/{postId}", 1L)
+        mockMvc.perform(patch("/post/{postId}", 1L)
                         .contentType(APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(postEdit)))
                 .andExpect(status().isNotFound())
@@ -284,7 +284,7 @@ class PostControllerTest {
 
         String json = objectMapper.writeValueAsString(request);// 추후에 테스트 케이스를 수정하기 용이해짐
 
-        mockMvc.perform(post("/posts")
+        mockMvc.perform(post("/post")
                         .contentType(APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isBadRequest())

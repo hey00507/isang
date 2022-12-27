@@ -22,7 +22,7 @@ public abstract class IsangException extends RuntimeException {
         super(message, cause);
     }
 
-    public abstract String getStatusCode();
+    public abstract Integer getStatusCode();
 
     public void addValidation(String fieldName, String message){
         validation.put(fieldName,message);

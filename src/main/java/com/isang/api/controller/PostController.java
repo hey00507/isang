@@ -7,6 +7,7 @@ import com.isang.api.entity.response.PostResponse;
 import com.isang.api.service.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -18,29 +19,35 @@ import java.util.List;
 public class PostController {
 
     private final PostService postService;
-    @PostMapping("/posts")
+
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("/post")
     public void post(@RequestBody @Valid PostCreate request) {
         request.validate();
         postService.write(request);
     }
 
 
-    @GetMapping("/posts/{postId}")
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/post/{postId}")
     public PostResponse get(@PathVariable(name = "postId") Long id){
         return postService.get(id);
     }
 
-    @GetMapping("/posts")
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/post")
     public List<PostResponse> getList(@ModelAttribute PostSearch postSearch){
         return postService.getList(postSearch);
     }
 
-    @PatchMapping("/posts/{postId}")
+    @ResponseStatus(HttpStatus.OK)
+    @PatchMapping("/post/{postId}")
     public void edit(@PathVariable Long postId, @RequestBody @Valid PostEdit request){
         postService.edit(postId,request);
     }
 
-    @DeleteMapping("/posts/{postId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/post/{postId}")
     public void delete(@PathVariable Long postId){
         postService.delete(postId);
     }
