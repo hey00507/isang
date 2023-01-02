@@ -20,7 +20,18 @@ public class PostController {
 
     private final PostService postService;
 
-    @ResponseStatus(HttpStatus.CREATED)
+    @GetMapping("/test")
+    public String test(){
+        return "hello";
+    }
+
+
+    @GetMapping("/foo")
+    public String foo() {
+        return "bar";
+    }
+
+        @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/post")
     public void post(@RequestBody @Valid PostCreate request) {
         request.validate();
