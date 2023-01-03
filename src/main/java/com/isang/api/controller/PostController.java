@@ -1,5 +1,6 @@
 package com.isang.api.controller;
 
+import com.isang.api.config.data.UserSession;
 import com.isang.api.entity.request.PostCreate;
 import com.isang.api.entity.request.PostEdit;
 import com.isang.api.entity.request.PostSearch;
@@ -20,15 +21,12 @@ public class PostController {
 
     private final PostService postService;
 
-    @GetMapping("/test")
-    public String test(){
-        return "hello";
-    }
 
 
-    @GetMapping("/foo")
-    public String foo() {
-        return "bar";
+    @GetMapping("/test-auth")
+    public String testAuth(UserSession userSession) {
+        log.info("UserName:  >>> {}", userSession.name);
+        return "인증 성공";
     }
 
         @ResponseStatus(HttpStatus.CREATED)

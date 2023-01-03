@@ -2,6 +2,7 @@ package com.isang.api.config;
 
 import com.isang.common.exception.custom.Unauthorized;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -23,9 +24,14 @@ public class AuthInterceptor implements HandlerInterceptor {
 
         log.info("access By IP : {}", request.getRemoteAddr());
         String accessToken = request.getParameter("accessToken");
-        if(accessToken != null && accessToken.equals("isang")){
+        log.info("accessToken  >> {}", accessToken);
+
+        if(!ObjectUtils.isEmpty(accessToken)){
+            request.setAttribute("userName", accessToken);
             return true;
         }
+
+
         log.warn("> Not Valid Authorization");
         throw  new Unauthorized();
     }
