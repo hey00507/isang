@@ -9,8 +9,11 @@ spring:
     username: sa
     password:
     driver-class-name: org.h2.Driver
-
-# 페이지네이션의 시작을 1 로 하겠다. : 웹 요청을 통한 page 를 교정해줌
+  jpa:
+    defer-datasource-initialization: true
+  sql:
+    init
+  # 페이지네이션의 시작을 1 로 하겠다. : 웹 요청을 통한 page 를 교정해줌
   data:
     web:
       pageable:
