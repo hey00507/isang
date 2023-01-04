@@ -1,0 +1,5 @@
+### 테스트 요청
+
+GET localhost:8080/test-auth
+Content-Type: application/json
+Authorization: isang

@@ -25,8 +25,8 @@ public class PostController {
 
     @GetMapping("/test-auth")
     public String testAuth(UserSession userSession) {
-        log.info("UserName:  >>> {}", userSession.name);
-        return "인증 성공";
+        log.info("UserName:  >>> {}", userSession.id);
+        return "인증 성공 id > " + userSession.id;
     }
 
         @ResponseStatus(HttpStatus.CREATED)
